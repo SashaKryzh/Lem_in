@@ -15,4 +15,33 @@
 
 # include "libft.h"
 
+typedef struct		s_room
+{
+	char			*name;
+	struct s_tube	*tubes;
+	enum			e_role
+	{
+		none = 0,
+		start,
+		end
+	}				role;
+	struct s_room	*next;
+}					t_room;
+
+typedef struct		s_tube
+{
+	t_room			*path;
+	struct s_tube	*next;
+}					t_tube;
+
+t_room	*create_room(char *name, int role);
+t_room	*add_room(t_room *start, char *name, int role);
+
+/*
+** Tests
+*/
+
+void	print_room_info(t_room room);
+t_room	*test_init(void);
+
 #endif

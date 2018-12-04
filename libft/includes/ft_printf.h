@@ -30,7 +30,7 @@ typedef struct	s_arg
 	int		nlen;
 	enum	e_length
 	{
-		none,
+		no_lenght,
 		hh,
 		h,
 		l,

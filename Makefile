@@ -15,7 +15,8 @@ NAME = ants
 FLAGS = -Wall -Wextra -Werror
 CC = gcc $(FLAGS)
 
-SRCS = main.c
+SRCS = main.c \
+tests.c
 
 LIBFT = -L ./libft -lft
 LIB_HEAD = ./libft/includes
@@ -33,7 +34,7 @@ $(OBJ_DIR):
 $(NAME): $(OBJS) ./libft/libft.a
 	@$(CC) -o $(NAME) $(SRCS) $(LIBFT) -I $(LIB_HEAD)
 
-$(OBJ_DIR)/%.o: %.c $(LIB_HEAD)/*.h
+$(OBJ_DIR)/%.o: %.c $(LIB_HEAD)/*.h ./*.h
 	$(CC) -o $@ -c $< -I $(LIB_HEAD) 
 
 clean:

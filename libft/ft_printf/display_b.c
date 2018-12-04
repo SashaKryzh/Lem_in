@@ -14,20 +14,20 @@
 
 int			display_b(t_arg *arg, va_list ap)
 {
-    unsigned char	octet;
+	unsigned char	octet;
 	int				ret;
 
 	ret = 8;
-    arg->length = hh;
-    octet = get_unsinged(arg, ap);
+	arg->length = hh;
+	octet = get_unsinged(arg, ap);
 	arg->pref = '\0';
 	ret += arg->alter ? 1 : 0;
-    if (arg->width > ret && !arg->left_adj)
+	if (arg->width > ret && !arg->left_adj)
 		ret += padding(arg, ' ', ret);
 	arg->pref = arg->alter ? 'b' : '\0';
 	ft_putchar(arg->pref);
-    ft_print_bits(octet);
+	ft_print_bits(octet);
 	if (arg->width > ret && arg->left_adj)
 		ret += padding(arg, ' ', 8);
-    return (ret);
+	return (ret);
 }

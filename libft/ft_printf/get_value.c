@@ -29,7 +29,7 @@ uintmax_t	get_unsinged(t_arg *arg, va_list ap)
 		n = (uintmax_t)n;
 	if (arg->length == z)
 		n = (size_t)n;
-	if (arg->length == none)
+	if (arg->length == no_lenght)
 		n = (unsigned int)n;
 	return (n);
 }
@@ -51,7 +51,7 @@ intmax_t	get_signed(t_arg *arg, va_list ap)
 		n = (intmax_t)n;
 	if (arg->length == z)
 		n = (ssize_t)n;
-	if (arg->length == none)
+	if (arg->length == no_lenght)
 		n = (int)n;
 	return (n);
 }

@@ -17,7 +17,7 @@ long double	get_f(t_arg *arg, va_list ap)
 	long double n;
 
 	n = 0;
-	if (arg->length == none || arg->length == l)
+	if (arg->length == no_lenght || arg->length == l)
 		n = va_arg(ap, double);
 	else if (arg->length == L)
 		n = va_arg(ap, long double);

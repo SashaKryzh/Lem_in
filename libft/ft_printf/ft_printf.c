@@ -22,7 +22,7 @@ static void	initialize(t_arg *arg)
 	arg->pref = '\0';
 	arg->width = 0;
 	arg->precision = -1;
-	arg->length = none;
+	arg->length = no_lenght;
 }
 
 static int	print_arg(t_arg *arg, char spec, va_list ap)
