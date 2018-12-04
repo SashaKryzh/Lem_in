@@ -34,14 +34,32 @@ typedef struct		s_tube
 	struct s_tube	*next;
 }					t_tube;
 
-t_room	*create_room(char *name, int role);
-t_room	*add_room(t_room *start, char *name, int role);
+/*
+** Parser
+*/
+
+int		get_ants(void);
+t_room	*get_rooms(void);
+
+void	exit_func(int type, char *msg);
+int		char_tab_len(char **tab);
+
+/*
+** Rooms utils
+*/
+
+t_room				*create_room(char *name, int role);
+t_room				*add_room(t_room *start, char *name, int role);
+void				add_connection(t_room *room, char *from, char *to);
+t_room				*find_room(t_room *room, char *name);
+t_room				*find_room_role(t_room *room, int role);
 
 /*
 ** Tests
 */
 
-void	print_room_info(t_room room);
+void	print_rooms(t_room *room);
+void	print_room_info(t_room *room);
 t_room	*test_init(void);
 
 #endif

@@ -16,6 +16,9 @@ FLAGS = -Wall -Wextra -Werror
 CC = gcc $(FLAGS)
 
 SRCS = main.c \
+utils.c \
+parser.c \
+rooms_utils.c \
 tests.c
 
 LIBFT = -L ./libft -lft
