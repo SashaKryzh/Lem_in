@@ -18,12 +18,18 @@ void	exit_func(int type, char *msg)
 	exit(type);
 }
 
-void	solution(t_room *room, t_room *src)
-{
-	room = NULL;
-	src = NULL;
-	ft_printf("tyt");
-}
+// int		solution(t_room *room, t_room *src)
+// {
+// 	t_tube	*tubes;
+
+// 	if (src->role == end)
+// 		return (1);
+// 	tubes = src->tubes;
+// 	while (tubes)
+// 	{
+
+// 	}
+// }
 
 int		main(void)
 {
@@ -35,11 +41,11 @@ int		main(void)
 	rooms = get_rooms();
 
 	print_rooms(rooms);
-	ft_printf("!!!!!!!!!!!\n\n");
+	//ft_printf("!!!!!!!!!!!\n\n");
 
 	src = find_room_role(rooms, 1);
-	print_room_info(src);
+	//print_room_info(src);
 
-	solution(rooms, src);
+	//solution(rooms, src);
 	return (0);
 }

@@ -51,7 +51,7 @@ int		char_tab_len(char **tab);
 t_room				*create_room(char *name, int role);
 t_room				*add_room(t_room *start, char *name, int role);
 void				add_connection(t_room *room, char *from, char *to);
-t_room				*find_room(t_room *room, char *name);
+t_room				*find_room_name(t_room *room, char *name);
 t_room				*find_room_role(t_room *room, int role);
 
 /*
