@@ -21,6 +21,7 @@ typedef struct		s_room
 {
 	int				index;
 	char			*name;
+	int				used;
 	struct s_tube	*tubes;
 	enum			e_role
 	{
@@ -37,7 +38,14 @@ typedef struct		s_tube
 	struct s_tube	*next;
 }					t_tube;
 
-void				dijkstra(t_room *rooms, int cnt_rooms, int src, int **p);
+typedef struct		s_path
+{
+	int				*p;
+	int				len;
+	struct s_path	*next;
+}					t_path;
+
+int					*dijkstra(t_room *rooms, int cnt_rooms, int src, int **p);
 
 /*
 ** Parser

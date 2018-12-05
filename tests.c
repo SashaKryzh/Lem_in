@@ -14,7 +14,7 @@ void	print_room_info(t_room *room)
 {
 	t_tube	*tmp;
 	
-	ft_printf("--- %s (%d) ---\n", room->name, room->index);
+	ft_printf("--- %s (used: %d)---\n", room->name, room->used);
 	tmp = room->tubes;
 	while (tmp)
 	{
