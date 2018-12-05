@@ -12,26 +12,17 @@
 
 #include "lem_in.h"
 
-t_room	*find_room_name(t_room *rooms, char *name)
+int		count_rooms(t_room *rooms)
 {
-	while (rooms)
-	{
-		if (!ft_strcmp(rooms->name, name))
-			break ;
-		rooms = rooms->next;
-	}
-	return (rooms);
-}
+	int i;
 
-t_room	*find_room_role(t_room *rooms, int role)
-{
+	i = 0;
 	while (rooms)
 	{
-		if (rooms->role == role)
-			break ;
 		rooms = rooms->next;
+		i++;
 	}
-	return (rooms);
+	return (i);
 }
 
 t_room	*create_room(char *name, int role)

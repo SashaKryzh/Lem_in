@@ -19,6 +19,7 @@ SRCS = main.c \
 utils.c \
 parser.c \
 rooms_utils.c \
+find_room.c \
 tests.c
 
 LIBFT = -L ./libft -lft

@@ -15,7 +15,7 @@
 
 # include "libft.h"
 
-# define INF 100000000
+# define INF 2147483647
 
 typedef struct		s_room
 {
@@ -55,11 +55,18 @@ int		char_tab_len(char **tab);
 ** Rooms utils
 */
 
+int					count_rooms(t_room *rooms);
 t_room				*create_room(char *name, int role);
 t_room				*add_room(t_room *start, char *name, int role);
 void				add_connection(t_room *room, char *from, char *to);
+
+/*
+** Find room
+*/
+
 t_room				*find_room_name(t_room *room, char *name);
 t_room				*find_room_role(t_room *room, int role);
+t_room				*find_room_index(t_room *rooms, int index);
 
 /*
 ** Tests

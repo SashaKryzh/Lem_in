@@ -1,16 +1,13 @@
 2
+1 0 2
 ##start
-start 0 0
-1 0 0
-2 0 0
-3 0 0
-4 0 0
+start 2 0
 ##end
-end 0 0
+end 2 6
+2 4 2
+3 4 4
 start-1
 start-2
-1-end
 2-3
-#just a comment
-2-4
 3-end
+end-1
