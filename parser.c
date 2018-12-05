@@ -20,7 +20,7 @@ int		get_ants(void)
 	get_next_line(0, &line);
 	ret = ft_atoi(line);
 	free(line);
-	if (ret < 0)
+	if (ret <= 0)
 		exit_func(0, "Error on input");
 	return (ret);
 }

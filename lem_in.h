@@ -15,8 +15,11 @@
 
 # include "libft.h"
 
+# define INF 100000000
+
 typedef struct		s_room
 {
+	int				index;
 	char			*name;
 	struct s_tube	*tubes;
 	enum			e_role
@@ -41,6 +44,10 @@ typedef struct		s_tube
 int		get_ants(void);
 t_room	*get_rooms(void);
 
+/*
+** Utils
+*/
+
 void	exit_func(int type, char *msg);
 int		char_tab_len(char **tab);
 
@@ -59,7 +66,7 @@ t_room				*find_room_role(t_room *room, int role);
 */
 
 void	print_rooms(t_room *room);
+void	print_rooms_array(t_room **rooms);
 void	print_room_info(t_room *room);
-t_room	*test_init(void);
 
 #endif

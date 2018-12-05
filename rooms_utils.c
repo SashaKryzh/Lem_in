@@ -12,26 +12,26 @@
 
 #include "lem_in.h"
 
-t_room	*find_room_name(t_room *room, char *name)
+t_room	*find_room_name(t_room *rooms, char *name)
 {
-	while (room)
+	while (rooms)
 	{
-		if (!ft_strcmp(room->name, name))
+		if (!ft_strcmp(rooms->name, name))
 			break ;
-		room = room->next;
+		rooms = rooms->next;
 	}
-	return (room);
+	return (rooms);
 }
 
-t_room	*find_room_role(t_room *room, int role)
+t_room	*find_room_role(t_room *rooms, int role)
 {
-	while (room)
+	while (rooms)
 	{
-		if (room->role == role)
+		if (rooms->role == role)
 			break ;
-		room = room->next;
+		rooms = rooms->next;
 	}
-	return (room);
+	return (rooms);
 }
 
 t_room	*create_room(char *name, int role)
@@ -47,26 +47,42 @@ t_room	*create_room(char *name, int role)
 
 t_room	*add_room(t_room *start, char *name, int role)
 {
+	t_room	*tmp;
 	t_room	*new;
 
 	new = create_room(name, role);
-	new->next = start;
-	start = new;
+	if (!start)
+		start = new;
+	else
+	{
+		tmp = start;
+		while (tmp->next) // добавить проверки
+			tmp = tmp->next;
+		new->index = tmp->index + 1;
+		tmp->next = new;
+	}
 	return (start);
 }
 
 void	add_connection(t_room *room, char *from, char *to)
 {
 	t_room	*r_from;
-	t_tube	*tube;
+	t_room	*r_to;
+	t_tube	*con1;
+	t_tube	*con2;
 
 	if (!ft_strcmp(from, to))
-		exit_func(0, "Error on input");
-	if (!(r_from = find_room_name(room, from)))
-		exit_func(0, "Error on input");
-	tube = (t_tube *)malloc(sizeof(t_tube));
-	if (!(tube->path = find_room_name(room, to)))
-		exit_func(0, "Error on input");
-	tube->next = r_from->tubes;
-	r_from->tubes = tube;
+		exit_func(0, "Same rooms in connection");
+	r_from = find_room_name(room, from);
+	r_to = find_room_name(room, to);
+	if (!r_from || !r_to)
+		exit_func(0, "No rooms in connection");
+	con1 = (t_tube *)malloc(sizeof(t_tube));
+	con2 = (t_tube *)malloc(sizeof(t_tube));
+	con1->path = r_to;
+	con2->path = r_from;
+	con1->next = r_from->tubes;
+	con2->next = r_to->tubes;
+	r_from->tubes = con1;
+	r_to->tubes = con2;
 }
