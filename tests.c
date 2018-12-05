@@ -10,15 +10,6 @@ void	print_rooms(t_room *room)
 	}
 }
 
-// void	print_rooms_array(t_room **rooms)
-// {
-// 	while (*rooms)
-// 	{
-// 		print_room_info(*rooms);
-// 		rooms++;
-// 	}
-// }
-
 void	print_room_info(t_room *room)
 {
 	t_tube	*tmp;

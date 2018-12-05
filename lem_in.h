@@ -37,6 +37,8 @@ typedef struct		s_tube
 	struct s_tube	*next;
 }					t_tube;
 
+void				dijkstra(t_room *rooms, int cnt_rooms, int src, int **p);
+
 /*
 ** Parser
 */

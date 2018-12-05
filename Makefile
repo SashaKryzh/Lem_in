@@ -16,6 +16,7 @@ FLAGS = -Wall -Wextra -Werror
 CC = gcc $(FLAGS)
 
 SRCS = main.c \
+dijkstra.c \
 utils.c \
 parser.c \
 rooms_utils.c \
