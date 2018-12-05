@@ -41,6 +41,7 @@ typedef struct		s_tube
 typedef struct		s_path
 {
 	int				*p;
+	int				src;
 	int				len;
 	struct s_path	*next;
 }					t_path;
@@ -85,5 +86,7 @@ t_room				*find_room_index(t_room *rooms, int index);
 void	print_rooms(t_room *room);
 void	print_rooms_array(t_room **rooms);
 void	print_room_info(t_room *room);
+void	print_routs(t_room *rooms, t_path *routs, int dst);
+void	print_path(t_room *rooms, int src, int dst, int *p);
 
 #endif

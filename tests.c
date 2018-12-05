@@ -23,3 +23,12 @@ void	print_room_info(t_room *room)
 	}
 	ft_printf("\n");
 }
+
+void	print_routs(t_room *rooms, t_path *routs, int dst)
+{
+	while (routs)
+	{
+		print_path(rooms, routs->src, dst, routs->p);
+		routs = routs->next;
+	}
+}

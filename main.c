@@ -36,13 +36,14 @@ void	print_path(t_room *rooms, int src, int dst, int *p)
 	ft_printf("%s\n", find_room_index(rooms, v)->name);
 }
 
-t_path	*add_rout(t_path *routs, int *p, int len)
+t_path	*add_rout(t_path *routs, int *p, int len, int src)
 {
 	t_path	*tmp;
 	t_path	*new;
 
 	new = (t_path *)malloc(sizeof(t_path));
 	new->p = p;
+	new->src = src;
 	new->len = len;
 	new->next = NULL;
 	if (!routs)
@@ -69,38 +70,46 @@ void	mark_rout(t_room *rooms, int *p, int src, int dst)
 	}
 }
 
+void	unmark_rout(t_room *rooms)
+{
+	while (rooms)
+	{
+		rooms->used = 0;
+		rooms = rooms->next;
+	}
+}
+
 t_path	*find_routs(t_room *rooms, int src, int dst)
 {
 	t_path	*routs;
+	t_tube	*tubes;
 	int		*p;
 	int		*d;
 
 	routs = NULL;
-	int i = 0;
-	while (1)
+	tubes = find_room_index(rooms, src)->tubes;
+	while (tubes)
 	{
-		d = dijkstra(rooms, count_rooms(rooms), src, &p);
-		if (p[dst] == -1)
+		find_room_index(rooms, src)->used = 1;
+		while (1)
 		{
-			free(p);
+			d = dijkstra(rooms, count_rooms(rooms), tubes->path->index, &p);
+			if (p[dst] == -1)
+			{
+				free(p);
+				free(d);
+				break ;
+			}
+			mark_rout(rooms, p, tubes->path->index, dst);
+			routs = add_rout(routs, p, d[dst], tubes->path->index);
 			free(d);
-			break ;
+			if (find_room_index(rooms, p[dst]) == tubes->path)
+				break ;
 		}
-		mark_rout(rooms, p, src, dst);
-		routs = add_rout(routs, p, d[dst]);
-		free(d);
-		i++;
+		unmark_rout(rooms);
+		tubes = tubes->next;
 	}
 	return (routs);
-}
-
-void	print_routs(t_room *rooms, t_path *routs, int src, int dst)
-{
-	while (routs)
-	{
-		print_path(rooms, src, dst, routs->p);
-		routs = routs->next;
-	}
 }
 
 int		main(void)
@@ -120,6 +129,6 @@ int		main(void)
 	src = find_room_role(rooms, start)->index;
 	dst = find_room_role(rooms, end)->index;
 	routs = find_routs(rooms, src, dst);
-	print_routs(rooms, routs, src, dst);
+	print_routs(rooms, routs, dst);
 	return (0);
 }
