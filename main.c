@@ -33,7 +33,7 @@ void	print_path(t_room *rooms, int src, int dst, int *p)
 		ft_printf("%s <- ", find_room_index(rooms, v)->name);
 		v = p[v];
 	}
-	ft_printf("%s\n", find_room_index(rooms, v)->name);
+	ft_printf("%s", find_room_index(rooms, v)->name);
 }
 
 t_path	*add_rout(t_path *routs, int *p, int len, int src)
@@ -79,7 +79,7 @@ void	unmark_rout(t_room *rooms)
 	}
 }
 
-t_path	*find_routs(t_room *rooms, int src, int dst)
+t_path	*find_routs(t_room **rooms, int src, int dst)
 {
 	t_path	*routs;
 	t_tube	*tubes;
@@ -87,48 +87,57 @@ t_path	*find_routs(t_room *rooms, int src, int dst)
 	int		*d;
 
 	routs = NULL;
-	tubes = find_room_index(rooms, src)->tubes;
+	tubes = rooms[src]->tubes;
 	while (tubes)
 	{
-		find_room_index(rooms, src)->used = 1;
+		rooms[src]->used = 1;
 		while (1)
 		{
-			d = dijkstra(rooms, count_rooms(rooms), tubes->path->index, &p);
+			d = dijkstra(rooms, count_rooms(*rooms), tubes->path->index, &p);
+			p[dst] = tubes->path->index == dst ? src : p[dst];
 			if (p[dst] == -1)
 			{
 				free(p);
 				free(d);
 				break ;
 			}
-			mark_rout(rooms, p, tubes->path->index, dst);
-			routs = add_rout(routs, p, d[dst], tubes->path->index);
+			mark_rout(*rooms, p, tubes->path->index, dst);
+			routs = add_rout(routs, p, d[dst] + 1, tubes->path->index);
 			free(d);
-			if (find_room_index(rooms, p[dst]) == tubes->path)
+			if (rooms[p[dst]] == tubes->path || tubes->path->index == dst)
 				break ;
 		}
-		unmark_rout(rooms);
+		unmark_rout(*rooms);
 		tubes = tubes->next;
 	}
 	return (routs);
 }
 
+void	print_moves(t_room **rooms, t_path *routs, int src)
+{
+	rooms = NULL;
+	routs = NULL;
+	src = 0;
+}
+
 int		main(void)
 {
-	t_room	*rooms;
+	t_room	*lst;
+	t_room	**rooms;
 	t_path	*routs;
 	int		ants;
 	int		src;
 	int		dst;
 
 	ants = get_ants();
-	rooms = get_rooms();
-
-	//print_rooms(lst);
-	//ft_printf("!!!!!!!!!!!\n\n");
-
-	src = find_room_role(rooms, start)->index;
-	dst = find_room_role(rooms, end)->index;
+	lst = get_rooms();
+	rooms = lst_to_array(lst);
+	src = find_room_role(*rooms, start)->index;
+	dst = find_room_role(*rooms, end)->index;
 	routs = find_routs(rooms, src, dst);
-	print_routs(rooms, routs, dst);
+
+	print_routs(*rooms, routs, src, dst);
+
+	print_moves(rooms, routs, src);
 	return (0);
 }

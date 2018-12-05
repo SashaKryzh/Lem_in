@@ -24,11 +24,16 @@ void	print_room_info(t_room *room)
 	ft_printf("\n");
 }
 
-void	print_routs(t_room *rooms, t_path *routs, int dst)
+void	print_routs(t_room *rooms, t_path *routs, int src, int dst)
 {
+	int i = 0;
+
 	while (routs)
 	{
 		print_path(rooms, routs->src, dst, routs->p);
+		ft_printf(" <- %s (%d)\n", find_room_index(rooms, src)->name, routs->len);
 		routs = routs->next;
+		i++;
 	}
+	ft_printf("count: %d\n", i);
 }

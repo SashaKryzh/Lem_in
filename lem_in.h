@@ -46,7 +46,7 @@ typedef struct		s_path
 	struct s_path	*next;
 }					t_path;
 
-int					*dijkstra(t_room *rooms, int cnt_rooms, int src, int **p);
+int					*dijkstra(t_room **rooms, int cnt_rooms, int src, int **p);
 
 /*
 ** Parser
@@ -61,6 +61,7 @@ t_room	*get_rooms(void);
 
 void	exit_func(int type, char *msg);
 int		char_tab_len(char **tab);
+t_room	**lst_to_array(t_room *lst);
 
 /*
 ** Rooms utils
@@ -86,7 +87,7 @@ t_room				*find_room_index(t_room *rooms, int index);
 void	print_rooms(t_room *room);
 void	print_rooms_array(t_room **rooms);
 void	print_room_info(t_room *room);
-void	print_routs(t_room *rooms, t_path *routs, int dst);
+void	print_routs(t_room *rooms, t_path *routs, int src, int dst);
 void	print_path(t_room *rooms, int src, int dst, int *p);
 
 #endif

@@ -29,13 +29,13 @@ void	init_arrays(int **d, int **u, int **p, int cnt)
 	}
 }
 
-void	check_tubes(t_room *rooms, int v, int *d, int *p)
+void	check_tubes(t_room **rooms, int v, int *d, int *p)
 {
 	t_tube	*tubes;
 
 	if (v == -1)
 		return ;
-	tubes = find_room_index(rooms, v)->tubes;
+	tubes = rooms[v]->tubes;
 	while (tubes)
 	{
 		if (d[v] + 1 < d[tubes->path->index])
@@ -47,7 +47,7 @@ void	check_tubes(t_room *rooms, int v, int *d, int *p)
 	}
 }
 
-int		*dijkstra(t_room *rooms, int cnt_rooms, int src, int **p)
+int		*dijkstra(t_room **rooms, int cnt_rooms, int src, int **p)
 {
 	int		*d;
 	int		*u;
@@ -63,7 +63,7 @@ int		*dijkstra(t_room *rooms, int cnt_rooms, int src, int **p)
 		v = -1;
 		j = -1;
 		while (++j < cnt_rooms)
-			if (!u[j] && (v == -1 || d[j] < d[v]) && find_room_index(rooms, j)->used == 0)
+			if (!u[j] && (v == -1 || d[j] < d[v]) && rooms[j]->used == 0)
 				v = j;
 		i++;
 		if (d[v] == INF)
