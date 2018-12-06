@@ -67,7 +67,7 @@ int		*dijkstra(t_room **rooms, int cnt_rooms, int src, int **p)
 				v = j;
 		i++;
 		if (d[v] == INF)
-			continue ;
+			break ;
 		u[v] = 1;
 		check_tubes(rooms, v, d, *p);
 	}

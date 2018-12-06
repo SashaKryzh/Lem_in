@@ -14,7 +14,7 @@ void	print_room_info(t_room *room)
 {
 	t_tube	*tmp;
 	
-	ft_printf("--- %s (used: %d)---\n", room->name, room->used);
+	ft_printf("--- %s (used: %d) (index: %d)---\n", room->name, room->used, room->index);
 	tmp = room->tubes;
 	while (tmp)
 	{
@@ -31,7 +31,8 @@ void	print_routs(t_room *rooms, t_path *routs, int src, int dst)
 	while (routs)
 	{
 		print_path(rooms, routs->src, dst, routs->p);
-		ft_printf(" <- %s (%d)\n", find_room_index(rooms, src)->name, routs->len);
+		// ft_printf(" <- %s (%d)\n", find_room_index(rooms, src)->name, routs->len);
+		ft_printf("\n");
 		routs = routs->next;
 		i++;
 	}

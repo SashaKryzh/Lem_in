@@ -13,7 +13,7 @@
 NAME = ants
 
 FLAGS = -Wall -Wextra -Werror
-CC = gcc $(FLAGS)
+CC = gcc
 
 SRCS = main.c \
 dijkstra.c \
