@@ -16,9 +16,9 @@ void	init_arrays(int **d, int **u, int **p, int cnt)
 {
 	int i;
 
-	*d = (int *)malloc(sizeof(int) * cnt);
-	*u = (int *)malloc(sizeof(int) * cnt);
-	*p = (int *)malloc(sizeof(int) * cnt);
+	*d = (int *)malloc(sizeof(int) * g_cnt_rooms + 1);
+	*u = (int *)malloc(sizeof(int) * g_cnt_rooms + 1);
+	*p = (int *)malloc(sizeof(int) * g_cnt_rooms + 1);
 	i = 0;
 	while (i < cnt)
 	{
@@ -47,7 +47,7 @@ void	check_tubes(t_room **rooms, int v, int *d, int *p)
 	}
 }
 
-int		*dijkstra(t_room **rooms, int cnt_rooms, int src, int **p)
+int		*dijkstra(t_room **rooms, int src, int **p)
 {
 	int		*d;
 	int		*u;
@@ -55,14 +55,14 @@ int		*dijkstra(t_room **rooms, int cnt_rooms, int src, int **p)
 	int		i;
 	int		j;
 
-	init_arrays(&d, &u, p, cnt_rooms);
+	init_arrays(&d, &u, p, g_cnt_rooms);
 	d[src] = 0;
 	i = 0;
-	while (i < cnt_rooms)
+	while (i < g_cnt_rooms)
 	{
 		v = -1;
 		j = -1;
-		while (++j < cnt_rooms)
+		while (++j < g_cnt_rooms)
 			if (!u[j] && (v == -1 || d[j] < d[v]) && rooms[j]->used == 0)
 				v = j;
 		i++;

@@ -17,6 +17,8 @@
 
 # define INF 2147483647
 
+extern int g_cnt_rooms;
+
 typedef struct		s_room
 {
 	int				index;
@@ -46,7 +48,7 @@ typedef struct		s_path
 	struct s_path	*next;
 }					t_path;
 
-int					*dijkstra(t_room **rooms, int cnt_rooms, int src, int **p);
+int					*dijkstra(t_room **rooms, int src, int **p);
 
 /*
 ** Parser
