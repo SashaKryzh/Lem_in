@@ -13,6 +13,7 @@
 #include "lem_in.h"
 
 int	g_cnt_rooms;
+int	g_ants;
 
 void	exit_func(int type, char *msg)
 {
@@ -20,27 +21,59 @@ void	exit_func(int type, char *msg)
 	exit(type);
 }
 
-void	print_path(t_room *rooms, int src, int dst, int *p)
+void	print_path(t_room *rooms, t_path *routs, int dst)
 {
 	int v;
 
 	v = dst;
-	if (p[v] == -1)
+	if (routs->p[v] == -1)
 	{
 		ft_printf("No path :(\n");
 		return ;
 	}
-	while (v != src)
+	while (v != routs->src)
 	{
 		ft_printf("%s <- ", find_room_index(rooms, v)->name);
-		v = p[v];
+		v = routs->p[v];
 	}
 	ft_printf("%s", find_room_index(rooms, v)->name);
 }
 
-void	print_moves(t_room **rooms, t_path *routs, int src)
+void	convert_routs(t_path *routs, int src, int dst)
 {
+	int v;
 
+	while (routs)
+	{
+		v = routs->p[dst];
+		while (v != routs->src)
+			v = routs->p[v];
+		routs->p[v] = src;
+		routs->src = src;
+		routs = routs->next;
+	}
+}
+
+void	print_moves(t_room **rooms, t_path *first_rout, int src, int dst)
+{
+	t_path	*routs;
+	t_path	*tmp;
+	int		moves;
+
+	ft_printf("ants: %d\n", g_ants);
+	routs = first_rout;
+	while (routs)
+	{
+		moves = routs->len + g_ants - 1;
+		mark_rout(*rooms, routs->p, src, dst);
+		tmp = first_rout;
+		while (tmp)
+		{
+			tmp = tmp->next;
+		}
+		ft_printf("%d\n", moves);
+		routs = routs->next;
+	}
 }
 
 int		main(void)
@@ -48,11 +81,10 @@ int		main(void)
 	t_room	*lst;
 	t_room	**rooms;
 	t_path	*routs;
-	int		ants;
 	int		src;
 	int		dst;
 
-	ants = get_ants();
+	g_ants = get_ants();
 	lst = get_rooms();
 	rooms = lst_to_array(lst);
 	g_cnt_rooms = count_rooms(*rooms);
@@ -61,8 +93,10 @@ int		main(void)
 	src = find_room_role(*rooms, start)->index;
 	dst = find_room_role(*rooms, end)->index;
 	routs = find_routs(rooms, src, dst);
+	convert_routs(routs, src, dst);
 	print_routs(*rooms, routs, src, dst);
 
-	print_moves(rooms, routs, src);
+	ft_printf("\n!!! MOVES !!!\n\n");
+	print_moves(rooms, routs, src, dst);
 	return (0);
 }

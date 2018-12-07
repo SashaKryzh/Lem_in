@@ -16,9 +16,9 @@ void	init_arrays(int **d, int **u, int **p, int cnt)
 {
 	int i;
 
-	*d = (int *)malloc(sizeof(int) * g_cnt_rooms + 1);
-	*u = (int *)malloc(sizeof(int) * g_cnt_rooms + 1);
-	*p = (int *)malloc(sizeof(int) * g_cnt_rooms + 1);
+	*d = (int *)malloc(sizeof(int) * (cnt + 1));
+	*u = (int *)malloc(sizeof(int) * (cnt + 1));
+	*p = (int *)malloc(sizeof(int) * (cnt + 1));
 	i = 0;
 	while (i < cnt)
 	{

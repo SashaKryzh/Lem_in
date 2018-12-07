@@ -64,7 +64,6 @@ t_path	*find_routs(t_room **rooms, int src, int dst)
 
 	routs = NULL;
 	tubes = rooms[src]->tubes;
-	int i = 0;
 	while (tubes)
 	{
 		rooms[src]->used = 1;
@@ -83,7 +82,6 @@ t_path	*find_routs(t_room **rooms, int src, int dst)
 			free(d);
 			if (rooms[p[dst]] == tubes->path || tubes->path->index == dst)
 				break ;
-			i++;
 		}
 		unmark_rout(*rooms);
 		tubes = tubes->next;

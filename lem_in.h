@@ -18,11 +18,12 @@
 # define INF 2147483647
 
 extern int g_cnt_rooms;
+extern int g_ants;
 
 typedef struct		s_room
 {
-	int				index;
 	char			*name;
+	int				index;
 	int				used;
 	struct s_tube	*tubes;
 	enum			e_role
@@ -51,6 +52,8 @@ typedef struct		s_path
 
 t_path				*find_routs(t_room **rooms, int src, int dst);
 int					*dijkstra(t_room **rooms, int src, int **p);
+
+void				mark_rout(t_room *rooms, int *p, int src, int dst);
 
 /*
 ** Parser
@@ -93,6 +96,6 @@ void	print_rooms(t_room *room);
 void	print_rooms_array(t_room **rooms);
 void	print_room_info(t_room *room);
 void	print_routs(t_room *rooms, t_path *routs, int src, int dst);
-void	print_path(t_room *rooms, int src, int dst, int *p);
+void	print_path(t_room *rooms, t_path *routs, int dst);
 
 #endif

@@ -30,8 +30,7 @@ void	print_routs(t_room *rooms, t_path *routs, int src, int dst)
 
 	while (routs)
 	{
-		print_path(rooms, routs->src, dst, routs->p);
-		// ft_printf(" <- %s (%d)\n", find_room_index(rooms, src)->name, routs->len);
+		print_path(rooms, routs, dst);
 		ft_printf("\n");
 		routs = routs->next;
 		i++;
