@@ -75,12 +75,12 @@ void	set_tubes(t_room *room, char *line)
 	free(line);
 	while (get_next_line(0, &line))
 	{
+		get_rooms_role(room, &line);
 		if (!match(line, "*-*"))
 		{
 			free(line);
 			exit_func(room, "Bad connection input");
 		}
-		get_rooms_role(room, &line);
 		ch = ft_strchr(line, '-');
 		add_connection(room, ft_strsub(line, 0, ch - line),
 			ft_strsub((ch + 1), 0, ft_strlen((ch + 1))));
@@ -103,7 +103,8 @@ t_room	*get_rooms(void)
 			set_tubes(room, line);
 			break ;
 		}
-		room = add_room(room, ft_strsub(line, 0, ft_strchr(line, ' ') - line), role);
+		room = add_room(room,
+			ft_strsub(line, 0, ft_strchr(line, ' ') - line), role);
 		free(line);
 	}
 	return (room);

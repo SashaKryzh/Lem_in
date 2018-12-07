@@ -53,22 +53,21 @@ typedef struct		s_path
 t_path				*find_routs(t_room **rooms, int src, int dst);
 int					*dijkstra(t_room **rooms, int src, int **p);
 
-void				mark_rout(t_room *rooms, int *p, int src, int dst);
+void				mark_rout(t_room **rooms, int *p, int src, int dst);
 void				unmark_rout(t_room *rooms);
 
 /*
 ** Parser
 */
 
-void		get_ants(void);
-t_room	*get_rooms(void);
+void				get_ants(void);
+t_room				*get_rooms(void);
 
 /*
 ** Utils
 */
 
-void	exit_func(t_room *rooms, char *msg);
-int					char_tab_len(char **tab);
+void				exit_func(t_room *rooms, char *msg);
 t_room				**lst_to_array(t_room *lst);
 void				lst_sort(t_path *routs);
 
@@ -76,7 +75,6 @@ void				lst_sort(t_path *routs);
 ** Rooms utils
 */
 
-int					count_rooms(t_room *rooms);
 t_room				*create_room(char *name, int role);
 t_room				*add_room(t_room *start, char *name, int role);
 void				add_connection(t_room *room, char *from, char *to);
@@ -93,10 +91,10 @@ t_room				*find_room_index(t_room *rooms, int index);
 ** Tests
 */
 
-void	print_rooms(t_room *room);
-void	print_rooms_array(t_room **rooms);
-void	print_room_info(t_room *room);
-void	print_routs(t_room *rooms, t_path *routs, int src, int dst);
-void	print_path(t_room *rooms, t_path *routs, int dst);
+void				print_rooms(t_room *room);
+void				print_rooms_array(t_room **rooms);
+void				print_room_info(t_room *room);
+void				print_routs(t_room *rooms, t_path *routs, int src, int dst);
+void				print_path(t_room *rooms, t_path *routs, int dst);
 
 #endif

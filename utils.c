@@ -12,22 +12,12 @@
 
 #include "lem_in.h"
 
-int			char_tab_len(char **tab)
-{
-	int count;
-
-	count = 0;
-	while (tab[count])
-		count++;
-	return (count);
-}
-
 t_room		**lst_to_array(t_room *lst)
 {
 	t_room	**rooms;
 	int		i;
 
-	rooms = (t_room **)malloc(sizeof(t_room *) * count_rooms(lst) + 1);
+	rooms = (t_room **)malloc(sizeof(t_room *) * g_cnt_rooms + 1);
 	i = 0;
 	while (lst)
 	{

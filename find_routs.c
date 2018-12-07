@@ -12,14 +12,14 @@
 
 #include "lem_in.h"
 
-void	mark_rout(t_room *rooms, int *p, int src, int dst)
+void	mark_rout(t_room **rooms, int *p, int src, int dst)
 {
 	int v;
 
 	v = p[dst];
 	while (v != src)
 	{
-		find_room_index(rooms, v)->used = 1;
+		rooms[v]->used = 1;
 		v = p[v];
 	}
 }
@@ -77,7 +77,7 @@ t_path	*find_routs(t_room **rooms, int src, int dst)
 				free(d);
 				break ;
 			}
-			mark_rout(*rooms, p, tubes->path->index, dst);
+			mark_rout(rooms, p, tubes->path->index, dst);
 			routs = add_rout(routs, p, d[dst] + 1, tubes->path->index);
 			free(d);
 			if (rooms[p[dst]] == tubes->path || tubes->path->index == dst)

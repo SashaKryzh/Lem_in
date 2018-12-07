@@ -17,23 +17,8 @@ int	g_ants;
 
 void	exit_func(t_room *rooms, char *msg)
 {
-	t_room *tmp;
-	t_tube *tmp_p;
-
-	while (rooms)
-	{
-		tmp = rooms;
-		rooms = rooms->next;
-		free(tmp->name);
-		while (tmp->tubes)
-		{
-			tmp_p = tmp->tubes;
-			tmp->tubes = tmp->tubes->next;
-			free(tmp_p);
-		}
-		free(tmp);
-	}
 	ft_printf("Error: %s\n", msg);
+	system("leaks ants");
 	exit(0);
 }
 
@@ -127,18 +112,19 @@ int		main(void)
 	get_ants();
 	lst = get_rooms();
 	rooms = lst_to_array(lst);
-	g_cnt_rooms = count_rooms(*rooms);
 	print_rooms(*rooms);
 	
 	ft_printf("!!! ROUTES !!!\n\n");
 	src = find_room_role(*rooms, start)->index;
 	dst = find_room_role(*rooms, end)->index;
-	routs = find_routs(rooms, src, dst);
+	if (!(routs = find_routs(rooms, src, dst)))
+		exit_func(*rooms, "No path to end");
 	convert_routs(routs, src, dst);
 	print_routs(*rooms, routs, src, dst);
 
 	ft_printf("\n!!! MOVES !!!\n\n");
 	print_moves(rooms, routs, src, dst);
 
+	system("leaks ants");
 	return (0);
 }
