@@ -38,3 +38,45 @@ t_room		**lst_to_array(t_room *lst)
 	rooms[i] = 0;
 	return (rooms);
 }
+
+
+void	swap_nodes_info(t_path *n1, t_path *n2)
+{
+	int *tmp_p;
+	int tmp_src;
+	int tmp_len;
+
+	tmp_p = n1->p;
+	tmp_src = n1->src;
+	tmp_len = n1->len;
+	n1->p = n2->p;
+	n1->src = n2->src;
+	n1->len = n2->len;
+	n2->p = tmp_p;
+	n2->src = tmp_src;
+	n2->len = tmp_len;
+}
+
+void	lst_sort(t_path *routs)
+{
+	t_path	*tmp;
+	int		changed;
+
+	if (routs == NULL)
+		return ;
+	changed = 1;
+	while (changed)
+	{
+		tmp = routs;
+		changed = 0;
+		while (tmp->next)
+		{
+			if (tmp->len > tmp->next->len)
+			{
+				swap_nodes_info(tmp, tmp->next);
+				changed = 1;
+			}
+			tmp = tmp->next;
+		}
+	}
+}

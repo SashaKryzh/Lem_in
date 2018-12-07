@@ -48,6 +48,8 @@ typedef struct		s_path
 	struct s_path	*next;
 }					t_path;
 
+
+t_path				*find_routs(t_room **rooms, int src, int dst);
 int					*dijkstra(t_room **rooms, int src, int **p);
 
 /*
@@ -61,9 +63,10 @@ t_room	*get_rooms(void);
 ** Utils
 */
 
-void	exit_func(int type, char *msg);
-int		char_tab_len(char **tab);
-t_room	**lst_to_array(t_room *lst);
+void				exit_func(int type, char *msg);
+int					char_tab_len(char **tab);
+t_room				**lst_to_array(t_room *lst);
+void				lst_sort(t_path *routs);
 
 /*
 ** Rooms utils
