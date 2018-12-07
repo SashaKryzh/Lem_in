@@ -54,19 +54,20 @@ t_path				*find_routs(t_room **rooms, int src, int dst);
 int					*dijkstra(t_room **rooms, int src, int **p);
 
 void				mark_rout(t_room *rooms, int *p, int src, int dst);
+void				unmark_rout(t_room *rooms);
 
 /*
 ** Parser
 */
 
-int		get_ants(void);
+void		get_ants(void);
 t_room	*get_rooms(void);
 
 /*
 ** Utils
 */
 
-void				exit_func(int type, char *msg);
+void	exit_func(t_room *rooms, char *msg);
 int					char_tab_len(char **tab);
 t_room				**lst_to_array(t_room *lst);
 void				lst_sort(t_path *routs);

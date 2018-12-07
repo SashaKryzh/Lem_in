@@ -12,20 +12,36 @@
 
 #include "lem_in.h"
 
-int		get_ants(void)
+void	get_ants(void)
 {
 	char	*line;
-	int		ret;
 
-	get_next_line(0, &line);
-	ret = ft_atoi(line);
-	free(line);
-	if (ret <= 0)
-		exit_func(0, "Error on input");
-	return (ret);
+	if (get_next_line(0, &line))
+	{
+		g_ants = ft_atoi(line);
+		free(line);
+	}
+	if (g_ants <= 0)
+	{
+		ft_printf("Wrong number of ants: %d\n", g_ants);
+		exit(0);
+	}
 }
 
-int		get_rooms_role(char **line)
+int		match(char *s1, char *s2)
+{
+	if (*s1 && *s2 == '*')
+		return (match(s1, s2 + 1) || match(s1 + 1, s2));
+	else if (!(*s1) && *s2 == '*')
+		return (match(s1, s2 + 1));
+	else if (*s1 && *s2 && *s1 == *s2)
+		return (match(s1 + 1, s2 + 1));
+	else if (!(*s1) && !(*s2))
+		return (1);
+	return (0);
+}
+
+int		get_rooms_role(t_room *rooms, char **line)
 {
 	int ret;
 
@@ -40,23 +56,35 @@ int		get_rooms_role(char **line)
 		get_next_line(0, line);
 	}
 	if (**line == 'L')
-		exit_func(0, "Error on input");
+		exit_func(rooms, "Rooms name begin with 'L'");
 	return (ret);
 }
 
 void	set_tubes(t_room *room, char *line)
 {
-	char **data;
+	char	*ch;
 
-	data = ft_strsplit(line, '-');
+	if (!match(line, "*-*"))
+	{
+		free(line);
+		exit_func(room, "Bad connection input");
+	}
+	ch = ft_strchr(line, '-');
+	add_connection(room, ft_strsub(line, 0, ch - line),
+		ft_strsub((ch + 1), 0, ft_strlen((ch + 1))));
 	free(line);
-	add_connection(room, data[0], data[1]);
 	while (get_next_line(0, &line))
 	{
-		get_rooms_role(&line);
-		data = ft_strsplit(line, '-');
+		if (!match(line, "*-*"))
+		{
+			free(line);
+			exit_func(room, "Bad connection input");
+		}
+		get_rooms_role(room, &line);
+		ch = ft_strchr(line, '-');
+		add_connection(room, ft_strsub(line, 0, ch - line),
+			ft_strsub((ch + 1), 0, ft_strlen((ch + 1))));
 		free(line);
-		add_connection(room, data[0], data[1]);
 	}
 }
 
@@ -64,19 +92,19 @@ t_room	*get_rooms(void)
 {
 	t_room	*room;
 	char	*line;
-	char	**data;
 	int		role;
 
 	room = NULL;
 	while (get_next_line(0, &line))
 	{
-		role = get_rooms_role(&line);
-		if (char_tab_len((data = ft_strsplit(line, ' '))) != 3)
+		role = get_rooms_role(room, &line);
+		if (!match(line, "* * *"))
 		{
 			set_tubes(room, line);
 			break ;
 		}
-		room = add_room(room, data[0], role);
+		room = add_room(room, ft_strsub(line, 0, ft_strchr(line, ' ') - line), role);
+		free(line);
 	}
 	return (room);
 }

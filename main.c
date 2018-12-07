@@ -15,10 +15,26 @@
 int	g_cnt_rooms;
 int	g_ants;
 
-void	exit_func(int type, char *msg)
+void	exit_func(t_room *rooms, char *msg)
 {
-	ft_printf("%s\n", msg);
-	exit(type);
+	t_room *tmp;
+	t_tube *tmp_p;
+
+	while (rooms)
+	{
+		tmp = rooms;
+		rooms = rooms->next;
+		free(tmp->name);
+		while (tmp->tubes)
+		{
+			tmp_p = tmp->tubes;
+			tmp->tubes = tmp->tubes->next;
+			free(tmp_p);
+		}
+		free(tmp);
+	}
+	ft_printf("Error: %s\n", msg);
+	exit(0);
 }
 
 void	print_path(t_room *rooms, t_path *routs, int dst)
@@ -54,25 +70,49 @@ void	convert_routs(t_path *routs, int src, int dst)
 	}
 }
 
-void	print_moves(t_room **rooms, t_path *first_rout, int src, int dst)
+int		is_rout_free(t_room **rooms, t_path *route, int dst)
 {
-	t_path	*routs;
-	t_path	*tmp;
-	int		moves;
+	int v;
 
-	ft_printf("ants: %d\n", g_ants);
-	routs = first_rout;
-	while (routs)
+	v = route->p[dst];
+	while (v != route->src)
 	{
-		moves = routs->len + g_ants - 1;
-		mark_rout(*rooms, routs->p, src, dst);
-		tmp = first_rout;
-		while (tmp)
-		{
-			tmp = tmp->next;
-		}
-		ft_printf("%d\n", moves);
-		routs = routs->next;
+		if (rooms[v]->used)
+			return (0);
+		v = route->p[v];
+	}
+	return (1);
+}
+
+void	print_moves(t_room **rooms, t_path *first_route, int src, int dst)
+{
+	t_path	*routes;
+	t_path	*tmp;
+	int		moves1;
+	int		moves2;
+	int		together;
+
+	ft_printf("ants: %d\n", g_ants); //
+	routes = first_route;
+	while (routes)
+	{
+		moves1 = routes->len + g_ants - 1;
+		ft_printf("%d\n", moves1); //
+		// mark_rout(*rooms, routes->p, src, dst);
+		// tmp = first_route;
+		// while (tmp)
+		// {
+		// 	if (is_rout_free(rooms, tmp, dst) && tmp != routes) // road free and its not start-end
+		// 	{
+		// 		moves2 = tmp->len + g_ants - 1;
+		// 		ft_printf("another moves: %d\n", moves2);
+		// 		together = g_ants / 2 - 1 + routes->len > tmp->len ? routes->len : tmp->len; // bullshit
+		// 		ft_printf("together: %d\n", together);
+		// 	}
+		// 	tmp = tmp->next;
+		// }
+		// unmark_rout(*rooms);
+		routes = routes->next;
 	}
 }
 
@@ -84,12 +124,13 @@ int		main(void)
 	int		src;
 	int		dst;
 
-	g_ants = get_ants();
+	get_ants();
 	lst = get_rooms();
 	rooms = lst_to_array(lst);
 	g_cnt_rooms = count_rooms(*rooms);
 	print_rooms(*rooms);
 	
+	ft_printf("!!! ROUTES !!!\n\n");
 	src = find_room_role(*rooms, start)->index;
 	dst = find_room_role(*rooms, end)->index;
 	routs = find_routs(rooms, src, dst);
@@ -98,5 +139,6 @@ int		main(void)
 
 	ft_printf("\n!!! MOVES !!!\n\n");
 	print_moves(rooms, routs, src, dst);
+
 	return (0);
 }
