@@ -93,6 +93,8 @@ int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
 
+int				ft_match(char *s1, char *s2);
+
 /*
 **	Numbers
 */

@@ -125,6 +125,6 @@ int		main(void)
 	ft_printf("\n!!! MOVES !!!\n\n");
 	print_moves(rooms, routs, src, dst);
 
-	system("leaks ants");
+	// system("leaks ants");
 	return (0);
 }

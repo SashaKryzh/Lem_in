@@ -69,6 +69,7 @@ ft_isascii.c \
 ft_isprint.c \
 ft_toupper.c \
 ft_tolower.c \
+ft_match.c \
 ft_putchar.c \
 ft_putstr.c \
 ft_putnstr.c \

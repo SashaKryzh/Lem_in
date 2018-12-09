@@ -28,19 +28,6 @@ void	get_ants(void)
 	}
 }
 
-int		match(char *s1, char *s2)
-{
-	if (*s1 && *s2 == '*')
-		return (match(s1, s2 + 1) || match(s1 + 1, s2));
-	else if (!(*s1) && *s2 == '*')
-		return (match(s1, s2 + 1));
-	else if (*s1 && *s2 && *s1 == *s2)
-		return (match(s1 + 1, s2 + 1));
-	else if (!(*s1) && !(*s2))
-		return (1);
-	return (0);
-}
-
 int		get_rooms_role(t_room *rooms, char **line)
 {
 	int ret;
@@ -64,7 +51,7 @@ void	set_tubes(t_room *room, char *line)
 {
 	char	*ch;
 
-	if (!match(line, "*-*"))
+	if (!ft_match(line, "*-*"))
 	{
 		free(line);
 		exit_func(room, "Bad connection input");
@@ -76,7 +63,7 @@ void	set_tubes(t_room *room, char *line)
 	while (get_next_line(0, &line))
 	{
 		get_rooms_role(room, &line);
-		if (!match(line, "*-*"))
+		if (!ft_match(line, "*-*"))
 		{
 			free(line);
 			exit_func(room, "Bad connection input");
@@ -98,7 +85,7 @@ t_room	*get_rooms(void)
 	while (get_next_line(0, &line))
 	{
 		role = get_rooms_role(room, &line);
-		if (!match(line, "* * *"))
+		if (!ft_match(line, "* * *"))
 		{
 			set_tubes(room, line);
 			break ;
