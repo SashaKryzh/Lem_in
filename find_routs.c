@@ -28,8 +28,8 @@ void	mark_rout2(t_path *routes)
 {
 	int i;
 
-	i = 0;
-	while (routes->route[i])
+	i = 1;
+	while (routes->route[i + 1])
 	{
 		routes->route[i]->used = 1;
 		i++;
@@ -42,6 +42,18 @@ void	unmark_rout(t_room *rooms)
 	{
 		rooms->used = 0;
 		rooms = rooms->next;
+	}
+}
+
+void	unmark_rout2(t_path	*route)
+{
+	int i;
+
+	i = 0;
+	while (route->route[i])
+	{
+		route->route[i]->used = 0;
+		i++;
 	}
 }
 

@@ -28,6 +28,7 @@ typedef struct		s_room
 	int				index;
 	int				used;
 	int				ant;
+	int				ant_index;
 	struct s_tube	*tubes;
 	enum			e_role
 	{
@@ -56,12 +57,14 @@ typedef struct		s_tube
 }					t_tube;
 
 t_path				*find_routs(t_room **rooms, int src, int dst);
+void				find_best(t_room **rooms, t_path *first_route);
 t_path				*add_rout(t_path *routs, int *p, int len, int src);
 int					*dijkstra(t_room **rooms, int src, int **p);
 
 void				mark_rout(t_room **rooms, int *p, int src, int dst);
 void				mark_rout2(t_path *routes);
 void				unmark_rout(t_room *rooms);
+void				unmark_rout2(t_path	*route);
 
 /*
 ** Parser
