@@ -40,11 +40,12 @@ typedef struct		s_room
 
 typedef struct		s_path
 {
-	int				*p;
 	t_room			**route;
+	int				*p;
 	int				src;
 	int				len;
 	int				selected;
+	int				best_rout;
 	struct s_path	*next;
 }					t_path;
 
@@ -55,9 +56,11 @@ typedef struct		s_tube
 }					t_tube;
 
 t_path				*find_routs(t_room **rooms, int src, int dst);
+t_path				*add_rout(t_path *routs, int *p, int len, int src);
 int					*dijkstra(t_room **rooms, int src, int **p);
 
 void				mark_rout(t_room **rooms, int *p, int src, int dst);
+void				mark_rout2(t_path *routes);
 void				unmark_rout(t_room *rooms);
 
 /*

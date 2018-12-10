@@ -20,7 +20,6 @@ int	g_dst;
 void	exit_func(t_room *rooms, char *msg)
 {
 	ft_printf("Error: %s\n", msg);
-	system("leaks ants");
 	exit(0);
 }
 
@@ -38,72 +37,107 @@ int		is_rout_free(t_room **rooms, t_path *route, int dst)
 	return (1);
 }
 
-int		cnt_moves(t_room **rooms, t_path *routes, int dst)
+void	mark_best_rout(t_path *routes)
 {
-	int cnt;
-	int v;
+	while (routes)
+	{
+		if (routes->selected)
+			routes->best_rout = 1;
+		routes->selected = 0;
+		routes = routes->next;
+	}
+}
+
+void	unselect_rout(t_path *routes)
+{
+	while (routes)
+	{
+		routes->selected = 0;
+		routes = routes->next;
+	}
+}
+
+int		cnt_moves(t_room **rooms, t_path *first_routes)
+{
+	t_path	*routes;
+	int		moved;
+	int		cnt;
+	int		i;
 
 	cnt = 0;
-	rooms[routes->src]->ant = g_ants;
-	rooms[dst]->ant = 0;
-	while (rooms[dst]->ant != g_ants)
+	rooms[g_src]->ant = g_ants;
+	rooms[g_dst]->ant = 0;
+	while (rooms[g_dst]->ant != g_ants)
 	{
-		if (rooms[routes->p[dst]]->ant)
+		moved = 0;
+		routes = first_routes;
+		while (routes)
 		{
-			rooms[dst]->ant += 1;
-			rooms[routes->p[dst]]->ant -= 1;
-		}
-		v = routes->p[dst];
-		while (1)
-		{
-			if (rooms[routes->p[v]]->ant)
+			if (routes->selected)
 			{
-				rooms[v]->ant += 1;
-				rooms[routes->p[v]]->ant -= 1;
+				i = routes->len;
+				while (i > 0)
+				{
+					if (routes->route[i - 1]->ant)
+					{
+						routes->route[i - 1]->ant -= 1;
+						routes->route[i]->ant += 1;
+						moved = 1;
+					}
+					i--;
+				}
 			}
-			v = routes->p[v];
-			if (v == routes->src)
-				break ;
+			routes = routes->next;
 		}
-		cnt++;
+		cnt += moved;
 	}
 	return (cnt);
 }
 
-void	find_best(t_room **rooms, t_path *first_route, int src, int dst)
+void	find_best(t_room **rooms, t_path *first_route)
 {
 	t_path	*routes;
 	t_path	*tmp;
+	int		best_moves;
 	int		moves1;
 	int		moves2;
-	int		best_moves;
-	int		together;
 
 	best_moves = INF;
 	ft_printf("ants: %d\n", g_ants); //
+
 	routes = first_route;
 	while (routes)
 	{
-		// moves1 = cnt_moves(rooms, routes, dst);
-		// if (moves1 < best_moves)
-		// {
-		// 	best_moves = moves1;
-		// 	routes->selected = 1;
-		// }
-		// mark_rout(rooms, routes->p, src, dst);
-		// tmp = first_route;
-		// while (tmp && tmp->len <= g_ants)
-		// {
-		// 	if (is_rout_free(rooms, tmp, dst))
-		// 	{
-				
-		// 	}
-		// 	tmp = tmp->next;
-		// }
+		routes->selected = 1;
+		moves1 = cnt_moves(rooms, routes);
+		mark_rout2(routes);
+		tmp = first_route;
+		while (tmp)
+		{
+			if (is_rout_free(rooms, tmp, g_dst))
+			{
+				tmp->selected = 1;
+				moves2 = cnt_moves(rooms, first_route);
+				if (moves2 < moves1)
+				{
+					moves1 = moves2;
+				} else {
+					tmp->selected = 0;
+					break ;
+				}
+			}
+			tmp = tmp->next;
+		}
+		if (moves1 < best_moves)
+		{
+			best_moves = moves1;
+			mark_best_rout(first_route);
+		}
+		unselect_rout(first_route);
 		unmark_rout(*rooms);
-		ft_printf("%d\n", moves1);
 		routes = routes->next;
 	}
+	ft_printf("%d\n", best_moves); //
 }
 
 int		main(void)
@@ -114,7 +148,7 @@ int		main(void)
 	get_ants();
 	rooms = get_rooms();
 	print_rooms(*rooms); //
-	
+
 	ft_printf("!!! ROUTES !!!\n\n"); //
 	g_src = find_room_role(*rooms, start)->index;
 	g_dst = find_room_role(*rooms, end)->index;
@@ -123,8 +157,13 @@ int		main(void)
 	convert_routs(rooms, routs, g_src, g_dst);
 	print_routs(routs); //
 
+	// routs->selected = 1;
+	// routs->next->selected = 1;
+	// ft_printf("%d\n", cnt_moves(rooms, routs));
+	// exit(1);
+
 	ft_printf("\n!!! MOVES !!!\n\n"); //
-	find_best(rooms, routs, g_src, g_dst);
+	find_best(rooms, routs);
 
 	// system("leaks ants");
 	return (0);

@@ -24,6 +24,18 @@ void	mark_rout(t_room **rooms, int *p, int src, int dst)
 	}
 }
 
+void	mark_rout2(t_path *routes)
+{
+	int i;
+
+	i = 0;
+	while (routes->route[i])
+	{
+		routes->route[i]->used = 1;
+		i++;
+	}
+}
+
 void	unmark_rout(t_room *rooms)
 {
 	while (rooms)
@@ -43,6 +55,7 @@ t_path	*add_rout(t_path *routs, int *p, int len, int src)
 	new->src = src;
 	new->len = len;
 	new->selected = 0;
+	new->best_rout = 0;
 	new->next = NULL;
 	if (!routs)
 		routs = new;
