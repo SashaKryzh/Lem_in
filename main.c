@@ -14,45 +14,14 @@
 
 int	g_cnt_rooms;
 int	g_ants;
+int	g_src;
+int	g_dst;
 
 void	exit_func(t_room *rooms, char *msg)
 {
 	ft_printf("Error: %s\n", msg);
 	system("leaks ants");
 	exit(0);
-}
-
-void	print_path(t_room *rooms, t_path *routs, int dst)
-{
-	int v;
-
-	v = dst;
-	if (routs->p[v] == -1)
-	{
-		ft_printf("No path :(\n");
-		return ;
-	}
-	while (v != routs->src)
-	{
-		ft_printf("%s <- ", find_room_index(rooms, v)->name);
-		v = routs->p[v];
-	}
-	ft_printf("%s", find_room_index(rooms, v)->name);
-}
-
-void	convert_routs(t_path *routs, int src, int dst)
-{
-	int v;
-
-	while (routs)
-	{
-		v = routs->p[dst];
-		while (v != routs->src)
-			v = routs->p[v];
-		routs->p[v] = src;
-		routs->src = src;
-		routs = routs->next;
-	}
 }
 
 int		is_rout_free(t_room **rooms, t_path *route, int dst)
@@ -69,34 +38,70 @@ int		is_rout_free(t_room **rooms, t_path *route, int dst)
 	return (1);
 }
 
-void	print_moves(t_room **rooms, t_path *first_route, int src, int dst)
+int		cnt_moves(t_room **rooms, t_path *routes, int dst)
+{
+	int cnt;
+	int v;
+
+	cnt = 0;
+	rooms[routes->src]->ant = g_ants;
+	rooms[dst]->ant = 0;
+	while (rooms[dst]->ant != g_ants)
+	{
+		if (rooms[routes->p[dst]]->ant)
+		{
+			rooms[dst]->ant += 1;
+			rooms[routes->p[dst]]->ant -= 1;
+		}
+		v = routes->p[dst];
+		while (1)
+		{
+			if (rooms[routes->p[v]]->ant)
+			{
+				rooms[v]->ant += 1;
+				rooms[routes->p[v]]->ant -= 1;
+			}
+			v = routes->p[v];
+			if (v == routes->src)
+				break ;
+		}
+		cnt++;
+	}
+	return (cnt);
+}
+
+void	find_best(t_room **rooms, t_path *first_route, int src, int dst)
 {
 	t_path	*routes;
 	t_path	*tmp;
 	int		moves1;
 	int		moves2;
+	int		best_moves;
 	int		together;
 
+	best_moves = INF;
 	ft_printf("ants: %d\n", g_ants); //
 	routes = first_route;
 	while (routes)
 	{
-		moves1 = routes->len + g_ants - 1;
-		ft_printf("%d\n", moves1); //
-		// mark_rout(*rooms, routes->p, src, dst);
-		// tmp = first_route;
-		// while (tmp)
+		// moves1 = cnt_moves(rooms, routes, dst);
+		// if (moves1 < best_moves)
 		// {
-		// 	if (is_rout_free(rooms, tmp, dst) && tmp != routes) // road free and its not start-end
+		// 	best_moves = moves1;
+		// 	routes->selected = 1;
+		// }
+		// mark_rout(rooms, routes->p, src, dst);
+		// tmp = first_route;
+		// while (tmp && tmp->len <= g_ants)
+		// {
+		// 	if (is_rout_free(rooms, tmp, dst))
 		// 	{
-		// 		moves2 = tmp->len + g_ants - 1;
-		// 		ft_printf("another moves: %d\n", moves2);
-		// 		together = g_ants / 2 - 1 + routes->len > tmp->len ? routes->len : tmp->len; // bullshit
-		// 		ft_printf("together: %d\n", together);
+				
 		// 	}
 		// 	tmp = tmp->next;
 		// }
-		// unmark_rout(*rooms);
+		unmark_rout(*rooms);
+		ft_printf("%d\n", moves1);
 		routes = routes->next;
 	}
 }
@@ -105,23 +110,21 @@ int		main(void)
 {
 	t_room	**rooms;
 	t_path	*routs;
-	int		src;
-	int		dst;
 
 	get_ants();
 	rooms = get_rooms();
 	print_rooms(*rooms); //
 	
 	ft_printf("!!! ROUTES !!!\n\n"); //
-	src = find_room_role(*rooms, start)->index;
-	dst = find_room_role(*rooms, end)->index;
-	if (!(routs = find_routs(rooms, src, dst)))
+	g_src = find_room_role(*rooms, start)->index;
+	g_dst = find_room_role(*rooms, end)->index;
+	if (!(routs = find_routs(rooms, g_src, g_dst)))
 		exit_func(*rooms, "No path to end");
-	convert_routs(routs, src, dst);
-	print_routs(*rooms, routs, src, dst); //
+	convert_routs(rooms, routs, g_src, g_dst);
+	print_routs(routs); //
 
 	ft_printf("\n!!! MOVES !!!\n\n"); //
-	print_moves(rooms, routs, src, dst);
+	find_best(rooms, routs, g_src, g_dst);
 
 	// system("leaks ants");
 	return (0);

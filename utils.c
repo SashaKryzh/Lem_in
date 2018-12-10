@@ -17,7 +17,7 @@ t_room		**lst_to_array(t_room *lst)
 	t_room	**rooms;
 	int		i;
 
-	rooms = (t_room **)malloc(sizeof(t_room *) * g_cnt_rooms + 1);
+	rooms = (t_room **)malloc(sizeof(t_room *) * (g_cnt_rooms + 1));
 	i = 0;
 	while (lst)
 	{
@@ -29,6 +29,27 @@ t_room		**lst_to_array(t_room *lst)
 	return (rooms);
 }
 
+void		convert_routs(t_room **rooms, t_path *routs, int src, int dst)
+{
+	int i;
+	int v;
+
+	while (routs)
+	{
+		routs->route = (t_room **)malloc(sizeof(t_room *) * (routs->len + 2));
+		i = routs->len + 1;
+		routs->route[i--] = NULL;
+		v = dst;
+		while (i > 0)
+		{
+			routs->route[i] = rooms[v];
+			v = routs->p[v];
+			i--;
+		}
+		routs->route[i] = rooms[src];
+		routs = routs->next;
+	}
+}
 
 void	swap_nodes_info(t_path *n1, t_path *n2)
 {

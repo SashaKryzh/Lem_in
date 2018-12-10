@@ -19,12 +19,15 @@
 
 extern int g_cnt_rooms;
 extern int g_ants;
+extern int g_src;
+extern int g_dst;
 
 typedef struct		s_room
 {
 	char			*name;
 	int				index;
 	int				used;
+	int				ant;
 	struct s_tube	*tubes;
 	enum			e_role
 	{
@@ -35,20 +38,21 @@ typedef struct		s_room
 	struct s_room	*next;
 }					t_room;
 
+typedef struct		s_path
+{
+	int				*p;
+	t_room			**route;
+	int				src;
+	int				len;
+	int				selected;
+	struct s_path	*next;
+}					t_path;
+
 typedef struct		s_tube
 {
 	t_room			*path;
 	struct s_tube	*next;
 }					t_tube;
-
-typedef struct		s_path
-{
-	int				*p;
-	int				src;
-	int				len;
-	struct s_path	*next;
-}					t_path;
-
 
 t_path				*find_routs(t_room **rooms, int src, int dst);
 int					*dijkstra(t_room **rooms, int src, int **p);
@@ -70,6 +74,7 @@ t_room				**get_rooms(void);
 void				exit_func(t_room *rooms, char *msg);
 t_room				**lst_to_array(t_room *lst);
 void				lst_sort(t_path *routs);
+void				convert_routs(t_room **rooms, t_path *routs, int src, int dst);
 
 /*
 ** Rooms utils
@@ -94,7 +99,7 @@ t_room				*find_room_index(t_room *rooms, int index);
 void				print_rooms(t_room *room);
 void				print_rooms_array(t_room **rooms);
 void				print_room_info(t_room *room);
-void				print_routs(t_room *rooms, t_path *routs, int src, int dst);
-void				print_path(t_room *rooms, t_path *routs, int dst);
+void				print_routs(t_path *routs);
+void				print_path(t_path *routs);
 
 #endif

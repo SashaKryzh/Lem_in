@@ -38,10 +38,11 @@ t_path	*add_rout(t_path *routs, int *p, int len, int src)
 	t_path	*tmp;
 	t_path	*new;
 
-	new = (t_path *)malloc(sizeof(t_path));
+	new = (t_path *)malloc(sizeof(t_path) + 1);
 	new->p = p;
 	new->src = src;
 	new->len = len;
+	new->selected = 0;
 	new->next = NULL;
 	if (!routs)
 		routs = new;
