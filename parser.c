@@ -75,9 +75,10 @@ void	set_tubes(t_room *room, char *line)
 	}
 }
 
-t_room	*get_rooms(void)
+t_room	**get_rooms(void)
 {
 	t_room	*room;
+	t_room	**a_rooms;
 	char	*line;
 	int		role;
 
@@ -94,5 +95,6 @@ t_room	*get_rooms(void)
 			ft_strsub(line, 0, ft_strchr(line, ' ') - line), role);
 		free(line);
 	}
-	return (room);
+	a_rooms = lst_to_array(room);
+	return (a_rooms);
 }

@@ -103,26 +103,24 @@ void	print_moves(t_room **rooms, t_path *first_route, int src, int dst)
 
 int		main(void)
 {
-	t_room	*lst;
 	t_room	**rooms;
 	t_path	*routs;
 	int		src;
 	int		dst;
 
 	get_ants();
-	lst = get_rooms();
-	rooms = lst_to_array(lst);
-	print_rooms(*rooms);
+	rooms = get_rooms();
+	print_rooms(*rooms); //
 	
-	ft_printf("!!! ROUTES !!!\n\n");
+	ft_printf("!!! ROUTES !!!\n\n"); //
 	src = find_room_role(*rooms, start)->index;
 	dst = find_room_role(*rooms, end)->index;
 	if (!(routs = find_routs(rooms, src, dst)))
 		exit_func(*rooms, "No path to end");
 	convert_routs(routs, src, dst);
-	print_routs(*rooms, routs, src, dst);
+	print_routs(*rooms, routs, src, dst); //
 
-	ft_printf("\n!!! MOVES !!!\n\n");
+	ft_printf("\n!!! MOVES !!!\n\n"); //
 	print_moves(rooms, routs, src, dst);
 
 	// system("leaks ants");

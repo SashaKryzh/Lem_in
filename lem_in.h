@@ -61,7 +61,7 @@ void				unmark_rout(t_room *rooms);
 */
 
 void				get_ants(void);
-t_room				*get_rooms(void);
+t_room				**get_rooms(void);
 
 /*
 ** Utils
