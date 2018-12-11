@@ -20,6 +20,10 @@ t_room	*create_room(char *name, int role)
 	ft_bzero(new, sizeof(t_room));
 	new->name = name;
 	new->role = role;
+	if (role == start)
+		g_src = g_cnt_rooms;
+	if (role == end)
+		g_dst = g_cnt_rooms;
 	new->index = g_cnt_rooms;
 	g_cnt_rooms += 1;
 	return (new);
@@ -30,8 +34,7 @@ t_room	*add_room(t_room *start, char *name, int role)
 	t_room	*tmp;
 	t_room	*new;
 
-	if (!start)
-		new = create_room(name, role);
+	new = create_room(name, role);
 	if (!start)
 		start = new;
 	else
@@ -39,15 +42,14 @@ t_room	*add_room(t_room *start, char *name, int role)
 		tmp = start;
 		while (tmp->next)
 		{
-			if (!ft_strcmp(tmp->name, name)
+			if (ft_strequ(tmp->name, name)
 				|| (tmp->role == role && role != none))
 				exit_func(start, "Rooms info dublicates");
 			tmp = tmp->next;
 		}
-		if (!ft_strcmp(tmp->name, name)
+		if (ft_strequ(tmp->name, name)
 			|| (tmp->role == role && role != none))
 			exit_func(start, "Rooms info dublicates");
-		new = create_room(name, role);
 		tmp->next = new;
 	}
 	return (start);
@@ -60,7 +62,7 @@ void	add_connection(t_room *room, char *from, char *to)
 	t_tube	*con1;
 	t_tube	*con2;
 
-	if (!ft_strcmp(from, to))
+	if (ft_strequ(from, to))
 		exit_func(room, "Same rooms in connection");
 	r_from = find_room_name(room, from);
 	r_to = find_room_name(room, to);
