@@ -17,6 +17,7 @@ CC = gcc
 
 SRCS = main.c \
 dijkstra.c \
+bfs.c \
 find_routs.c \
 find_best.c \
 utils.c \

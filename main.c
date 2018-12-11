@@ -13,6 +13,7 @@
 #include "lem_in.h"
 
 int		g_cnt_rooms;
+int		g_cnt_moves;
 int		g_ants;
 int		g_src;
 int		g_dst;
@@ -73,8 +74,9 @@ void	print_moves(t_room **rooms, t_route *first_routes)
 			}
 			routes = routes->next;
 		}
-		ft_printf("\n");
+		ft_printf("!\n");
 	}
+	ft_printf("moves: %d\n", g_cnt_moves);
 }
 
 int		main(void)
@@ -87,7 +89,30 @@ int		main(void)
 	get_ants();
 	rooms = get_rooms();
 	print_rooms(*rooms);
-	// print_rooms(*rooms); //
+
+	int p[g_cnt_rooms + 1];
+	bfs(rooms, p, g_src, NULL);
+
+	for (int i = 0; i < g_cnt_rooms; i++)
+		ft_printf("%d ", p[i]);
+	ft_printf("\n");
+
+	for (int i = 0; i < g_cnt_rooms; i++)
+		ft_printf("%d ", p[i]);
+	ft_printf("\n");
+
+	for (int i = 0; i < g_cnt_rooms; i++)
+		ft_printf("%d ", p[i]);
+	ft_printf("\n");
+	
+	int v;
+	v = g_dst;
+	while (v != -1)
+	{
+		ft_printf("%s <- ", rooms[v]->name);
+		v = p[v];
+	}
+	exit(0);
 
 	// ft_printf("!!! ROUTES !!!\n\n"); //
 	if (!(routs = find_routs(rooms, g_src, g_dst)))

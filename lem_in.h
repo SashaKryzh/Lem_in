@@ -19,6 +19,7 @@
 # define ROOM routes->route
 
 extern int		g_cnt_rooms;
+extern int		g_cnt_moves;
 extern int		g_ants;
 extern int		g_src;
 extern int		g_dst;
@@ -67,6 +68,7 @@ t_route				*find_routs(t_room **rooms, int src, int dst);
 void				find_best(t_room **rooms, t_route *first_route);
 t_route				*add_rout(t_route *routs, int *p, int len, int src);
 void				dijkstra(t_room **rooms, int src, int **p, int *dist);
+int					bfs(t_room **rooms, int *p, int src, t_tube *q);
 
 void				mark_rout(t_room **rooms, int *p, int src, int dst);
 void				mark_rout2(t_route *routes);

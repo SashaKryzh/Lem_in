@@ -119,7 +119,7 @@ void	find_best(t_room **rooms, t_route *first_route)
 		tmp = first_route;
 		while (tmp)
 		{
-			if (is_rout_free(tmp) && tmp != routes) // если путь start-end
+			if (tmp != routes) // если путь start-end
 			{
 				tmp->selected = 1;
 				moves2 = cnt_moves(rooms, first_route);
@@ -146,6 +146,7 @@ void	find_best(t_room **rooms, t_route *first_route)
 		unmark_routs(*rooms);
 		routes = routes->next;
 	}
+	g_cnt_moves = best_moves;
 	ft_printf("best: %d\n\n", best_moves); //
 }
 
