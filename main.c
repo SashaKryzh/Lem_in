@@ -20,12 +20,13 @@ int	g_dst;
 void	exit_func(t_room *rooms, char *msg)
 {
 	ft_printf("Error: %s\n", msg);
+	system("leaks ants");
 	exit(0);
 }
 
-void	print_moves(t_room **rooms, t_path *first_routes)
+void	print_moves(t_room **rooms, t_route *first_routes)
 {
-	t_path	*routes;
+	t_route	*routes;
 	int		i;
 	int		cnt;
 
@@ -42,15 +43,15 @@ void	print_moves(t_room **rooms, t_path *first_routes)
 				i = routes->len;
 				while (i > 0)
 				{
-					if (routes->route[i - 1]->ant)
+					if (ROOM[i - 1]->ant)
 					{
-						routes->route[i - 1]->ant -= 1;
-						routes->route[i]->ant += 1;
+						ROOM[i - 1]->ant -= 1;
+						ROOM[i]->ant += 1;
 						if (i > 1)
-							routes->route[i]->ant_index = routes->route[i - 1]->ant_index;
+							ROOM[i]->ant_index = ROOM[i - 1]->ant_index;
 						else
-							routes->route[i]->ant_index = ++cnt;
-						ft_printf("L%d-%s ", routes->route[i]->ant_index, routes->route[i]->name);
+							ROOM[i]->ant_index = ++cnt;
+						ft_printf("L%d-%s ", ROOM[i]->ant_index, ROOM[i]->name);
 					}
 					i--;
 				}
@@ -64,18 +65,16 @@ void	print_moves(t_room **rooms, t_path *first_routes)
 int		main(void)
 {
 	t_room	**rooms;
-	t_path	*routs;
+	t_route	*routs;
 
 	get_ants();
 	rooms = get_rooms();
 	// print_rooms(*rooms); //
 
 	// ft_printf("!!! ROUTES !!!\n\n"); //
-	g_src = find_room_role(*rooms, start)->index;
-	g_dst = find_room_role(*rooms, end)->index;
 	if (!(routs = find_routs(rooms, g_src, g_dst)))
 		exit_func(*rooms, "No path to end");
-	convert_routs(rooms, routs, g_src, g_dst);
+	convert_routs(rooms, routs);
 	// print_routs(routs); //
 
 	ft_printf("\n!!! BEST COMB !!!\n\n"); //

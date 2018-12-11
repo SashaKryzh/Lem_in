@@ -24,7 +24,7 @@ void	print_room_info(t_room *room)
 	ft_printf("\n");
 }
 
-void	print_path(t_path *routs)
+void	print_route(t_route *routs)
 {
 	int i;
 
@@ -37,19 +37,19 @@ void	print_path(t_path *routs)
 	ft_printf("%s (%d) (best: %d)", routs->route[i]->name, routs->len, routs->best_rout);
 }
 
-void	print_routs(t_path *routs)
+void	print_routs(t_route *routs)
 {
 	int i = 0;
 	int	cnt_best = 0;
 
 	while (routs)
 	{
-		print_path(routs);
+		print_route(routs);
 		ft_printf("\n");
 		if (routs->best_rout)
 			cnt_best++;
 		routs = routs->next;
 		i++;
 	}
-	ft_printf("count: %d, best: %d\n", i, cnt_best);
+	ft_printf("count: %d, best count: %d\n", i, cnt_best);
 }

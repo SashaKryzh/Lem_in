@@ -16,6 +16,7 @@
 # include "libft.h"
 
 # define INF 2147483647
+# define ROOM routes->route
 
 extern int g_cnt_rooms;
 extern int g_ants;
@@ -26,9 +27,12 @@ typedef struct		s_room
 {
 	char			*name;
 	int				index;
+
 	int				used;
 	int				ant;
 	int				ant_index;
+	int				ant_hold;
+
 	struct s_tube	*tubes;
 	enum			e_role
 	{
@@ -39,7 +43,7 @@ typedef struct		s_room
 	struct s_room	*next;
 }					t_room;
 
-typedef struct		s_path
+typedef struct		s_route
 {
 	t_room			**route;
 	int				*p;
@@ -47,8 +51,8 @@ typedef struct		s_path
 	int				len;
 	int				selected;
 	int				best_rout;
-	struct s_path	*next;
-}					t_path;
+	struct s_route	*next;
+}					t_route;
 
 typedef struct		s_tube
 {
@@ -56,15 +60,16 @@ typedef struct		s_tube
 	struct s_tube	*next;
 }					t_tube;
 
-t_path				*find_routs(t_room **rooms, int src, int dst);
-void				find_best(t_room **rooms, t_path *first_route);
-t_path				*add_rout(t_path *routs, int *p, int len, int src);
-int					*dijkstra(t_room **rooms, int src, int **p);
+t_route				*find_routs(t_room **rooms, int src, int dst);
+// int					find_best(t_room **rooms, t_route *first_route, int best_moves);
+void				find_best(t_room **rooms, t_route *first_route);
+t_route				*add_rout(t_route *routs, int *p, int len, int src);
+void				dijkstra(t_room **rooms, int src, int **p, int *dist);
 
 void				mark_rout(t_room **rooms, int *p, int src, int dst);
-void				mark_rout2(t_path *routes);
-void				unmark_rout(t_room *rooms);
-void				unmark_rout2(t_path	*route);
+void				mark_rout2(t_route *routes);
+void				unmark_routs(t_room *rooms);
+void				unmark_rout(t_route	*route);
 
 /*
 ** Parser
@@ -79,8 +84,8 @@ t_room				**get_rooms(void);
 
 void				exit_func(t_room *rooms, char *msg);
 t_room				**lst_to_array(t_room *lst);
-void				lst_sort(t_path *routs);
-void				convert_routs(t_room **rooms, t_path *routs, int src, int dst);
+void				lst_sort(t_route *routs);
+void				convert_routs(t_room **rooms, t_route *routs);
 
 /*
 ** Rooms utils
@@ -95,8 +100,8 @@ void				add_connection(t_room *room, char *from, char *to);
 */
 
 t_room				*find_room_name(t_room *room, char *name);
-t_room				*find_room_role(t_room *room, int role);
-t_room				*find_room_index(t_room *rooms, int index);
+// t_room				*find_room_role(t_room *room, int role);
+// t_room				*find_room_index(t_room *rooms, int index);
 
 /*
 ** Tests
@@ -105,7 +110,7 @@ t_room				*find_room_index(t_room *rooms, int index);
 void				print_rooms(t_room *room);
 void				print_rooms_array(t_room **rooms);
 void				print_room_info(t_room *room);
-void				print_routs(t_path *routs);
-void				print_path(t_path *routs);
+void				print_routs(t_route *routs);
+void				print_route(t_route *routs);
 
 #endif

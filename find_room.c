@@ -23,24 +23,24 @@ t_room	*find_room_name(t_room *rooms, char *name)
 	return (rooms);
 }
 
-t_room	*find_room_role(t_room *rooms, int role)
-{
-	while (rooms)
-	{
-		if (rooms->role == role)
-			break ;
-		rooms = rooms->next;
-	}
-	return (rooms);
-}
+// t_room	*find_room_role(t_room *rooms, int role)
+// {
+// 	while (rooms)
+// 	{
+// 		if (rooms->role == role)
+// 			break ;
+// 		rooms = rooms->next;
+// 	}
+// 	return (rooms);
+// }
 
-t_room	*find_room_index(t_room *rooms, int index)
-{
-	while (rooms)
-	{
-		if (rooms->index == index)
-			break ;
-		rooms = rooms->next;
-	}
-	return (rooms);
-}
+// t_room	*find_room_index(t_room *rooms, int index)
+// {
+// 	while (rooms)
+// 	{
+// 		if (rooms->index == index)
+// 			break ;
+// 		rooms = rooms->next;
+// 	}
+// 	return (rooms);
+// }

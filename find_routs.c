@@ -12,57 +12,12 @@
 
 #include "lem_in.h"
 
-void	mark_rout(t_room **rooms, int *p, int src, int dst)
+t_route	*add_rout(t_route *routs, int *p, int len, int src)
 {
-	int v;
+	t_route	*tmp;
+	t_route	*new;
 
-	v = p[dst];
-	while (v != src)
-	{
-		rooms[v]->used = 1;
-		v = p[v];
-	}
-}
-
-void	mark_rout2(t_path *routes)
-{
-	int i;
-
-	i = 1;
-	while (routes->route[i + 1])
-	{
-		routes->route[i]->used = 1;
-		i++;
-	}
-}
-
-void	unmark_rout(t_room *rooms)
-{
-	while (rooms)
-	{
-		rooms->used = 0;
-		rooms = rooms->next;
-	}
-}
-
-void	unmark_rout2(t_path	*route)
-{
-	int i;
-
-	i = 0;
-	while (route->route[i])
-	{
-		route->route[i]->used = 0;
-		i++;
-	}
-}
-
-t_path	*add_rout(t_path *routs, int *p, int len, int src)
-{
-	t_path	*tmp;
-	t_path	*new;
-
-	new = (t_path *)malloc(sizeof(t_path) + 1);
+	new = (t_route *)malloc(sizeof(t_route));
 	new->p = p;
 	new->src = src;
 	new->len = len;
@@ -81,12 +36,12 @@ t_path	*add_rout(t_path *routs, int *p, int len, int src)
 	return (routs);
 }
 
-t_path	*find_routs(t_room **rooms, int src, int dst)
+t_route	*find_routs(t_room **rooms, int src, int dst)
 {
-	t_path	*routs;
+	t_route	*routs;
 	t_tube	*tubes;
 	int		*p;
-	int		*d;
+	int		dist;
 
 	routs = NULL;
 	tubes = rooms[src]->tubes;
@@ -95,21 +50,19 @@ t_path	*find_routs(t_room **rooms, int src, int dst)
 		rooms[src]->used = 1;
 		while (1)
 		{
-			d = dijkstra(rooms, tubes->path->index, &p);
+			dijkstra(rooms, tubes->path->index, &p, &dist);
 			p[dst] = tubes->path->index == dst ? src : p[dst];
 			if (p[dst] == -1)
 			{
 				free(p);
-				free(d);
 				break ;
 			}
 			mark_rout(rooms, p, tubes->path->index, dst);
-			routs = add_rout(routs, p, d[dst] + 1, tubes->path->index);
-			free(d);
+			routs = add_rout(routs, p, dist + 1, tubes->path->index);
 			if (rooms[p[dst]] == tubes->path || tubes->path->index == dst)
 				break ;
 		}
-		unmark_rout(*rooms);
+		unmark_routs(*rooms);
 		tubes = tubes->next;
 	}
 	lst_sort(routs);

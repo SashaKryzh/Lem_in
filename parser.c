@@ -77,24 +77,22 @@ void	set_tubes(t_room *room, char *line)
 
 t_room	**get_rooms(void)
 {
-	t_room	*room;
-	t_room	**a_rooms;
+	t_room	*rooms;
 	char	*line;
 	int		role;
 
-	room = NULL;
+	rooms = NULL;
 	while (get_next_line(0, &line))
 	{
-		role = get_rooms_role(room, &line);
+		role = get_rooms_role(rooms, &line);
 		if (!ft_match(line, "* * *"))
 		{
-			set_tubes(room, line);
+			set_tubes(rooms, line);
 			break ;
 		}
-		room = add_room(room,
+		rooms = add_room(rooms,
 			ft_strsub(line, 0, ft_strchr(line, ' ') - line), role);
 		free(line);
 	}
-	a_rooms = lst_to_array(room);
-	return (a_rooms);
+	return (lst_to_array(rooms));
 }
