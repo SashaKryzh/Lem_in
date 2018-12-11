@@ -37,7 +37,7 @@ void	mark_best_rout(t_route *routes)
 	}
 }
 
-void	unselect_rout(t_route *routes)
+void	unselect_routs(t_route *routes)
 {
 	while (routes)
 	{
@@ -119,7 +119,7 @@ void	find_best(t_room **rooms, t_route *first_route)
 		tmp = first_route;
 		while (tmp)
 		{
-			if (is_rout_free(tmp))
+			if (is_rout_free(tmp) && tmp != routes) // если путь start-end
 			{
 				tmp->selected = 1;
 				moves2 = cnt_moves(rooms, first_route);
@@ -142,7 +142,7 @@ void	find_best(t_room **rooms, t_route *first_route)
 			best_moves = moves1;
 			mark_best_rout(first_route);
 		}
-		unselect_rout(first_route);
+		unselect_routs(first_route);
 		unmark_routs(*rooms);
 		routes = routes->next;
 	}

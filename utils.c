@@ -17,6 +17,8 @@ t_room		**lst_to_array(t_room *lst)
 	t_room	**rooms;
 	int		i;
 
+	if (!lst)
+		exit_func(NULL, "No data");
 	rooms = (t_room **)malloc(sizeof(t_room *) * (g_cnt_rooms + 1));
 	i = 0;
 	while (lst)

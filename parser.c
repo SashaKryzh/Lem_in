@@ -12,20 +12,33 @@
 
 #include "lem_in.h"
 
+int		skip_comments(char **line)
+{
+	while (*line && **line == '#')
+	{
+		if (ft_strnequ(*line, "##", 2))
+			break ;
+		add_to_tab(*line);
+		get_next_line(0, line);
+	}
+	if (!*line)
+		return (0);
+	return (1);
+}
+
 void	get_ants(void)
 {
 	char	*line;
 
-	if (get_next_line(0, &line))
-	{
-		g_ants = ft_atoi(line);
-		free(line);
-	}
+	get_next_line(0, &line);
+	if (!line)
+		exit_func(NULL, "Empty file");
+	if (!skip_comments(&line))
+		return ;
+	g_ants = ft_atoi(line);
+	add_to_tab(line);
 	if (g_ants <= 0)
-	{
-		ft_printf("Wrong number of ants: %d\n", g_ants);
-		exit(0);
-	}
+		exit_func(NULL, "Wrong number of ants");
 }
 
 int		get_rooms_role(t_room *rooms, char **line)
@@ -33,15 +46,19 @@ int		get_rooms_role(t_room *rooms, char **line)
 	int ret;
 
 	ret = 0;
-	if (**line == '#')
+	if (!skip_comments(line))
+		return (-1);
+	if (**line == '#' && ret == 0)
 	{
 		if (!ft_strcmp(*line, "##start"))
 			ret = 1;
 		if (!ft_strcmp(*line, "##end"))
 			ret = 2;
-		free(*line);
+		add_to_tab(*line);
 		get_next_line(0, line);
 	}
+	if (!*line || (**line == '#' && ret == 0))
+		exit_func(rooms, "Bad commands");
 	if (**line == 'L')
 		exit_func(rooms, "Rooms name begin with 'L'");
 	return (ret);
@@ -51,27 +68,26 @@ void	set_tubes(t_room *room, char *line)
 {
 	char	*ch;
 
+	skip_comments(&line);
 	if (!ft_match(line, "*-*"))
-	{
-		free(line);
 		exit_func(room, "Bad connection input");
-	}
 	ch = ft_strchr(line, '-');
 	add_connection(room, ft_strsub(line, 0, ch - line),
 		ft_strsub((ch + 1), 0, ft_strlen((ch + 1))));
-	free(line);
+	add_to_tab(line);
 	while (get_next_line(0, &line))
 	{
-		get_rooms_role(room, &line);
+		if (get_rooms_role(NULL, &line) == -1)
+			return ;
 		if (!ft_match(line, "*-*"))
 		{
-			free(line);
+			add_to_tab(line);
 			exit_func(room, "Bad connection input");
 		}
 		ch = ft_strchr(line, '-');
 		add_connection(room, ft_strsub(line, 0, ch - line),
 			ft_strsub((ch + 1), 0, ft_strlen((ch + 1))));
-		free(line);
+		add_to_tab(line);
 	}
 }
 
@@ -84,7 +100,8 @@ t_room	**get_rooms(void)
 	rooms = NULL;
 	while (get_next_line(0, &line))
 	{
-		role = get_rooms_role(rooms, &line);
+		if ((role = get_rooms_role(rooms, &line)) == -1)
+			exit_func(NULL, "Bad");
 		if (!ft_match(line, "* * *"))
 		{
 			set_tubes(rooms, line);
@@ -92,7 +109,7 @@ t_room	**get_rooms(void)
 		}
 		rooms = add_room(rooms,
 			ft_strsub(line, 0, ft_strchr(line, ' ') - line), role);
-		free(line);
+		add_to_tab(line);
 	}
 	return (lst_to_array(rooms));
 }

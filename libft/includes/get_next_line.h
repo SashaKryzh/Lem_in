@@ -15,14 +15,8 @@
 
 # include "libft.h"
 
-# define BUFF_SIZE 100000
-
-typedef struct	s_gnl
-{
-	char			*str;
-	int				fd;
-	struct s_gnl	*next;
-}				t_gnl;
+# define BUFF_SIZE 32
+# define MAX_FD_CNT 500
 
 int				get_next_line(const int fd, char **line);
 

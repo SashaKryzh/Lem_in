@@ -21,6 +21,7 @@ find_routs.c \
 find_best.c \
 utils.c \
 parser.c \
+tab_managment.c \
 routes_utils.c \
 rooms_utils.c \
 find_room.c \

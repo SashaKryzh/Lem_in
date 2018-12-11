@@ -12,16 +12,31 @@
 
 #include "lem_in.h"
 
-int	g_cnt_rooms;
-int	g_ants;
-int	g_src;
-int	g_dst;
+int		g_cnt_rooms;
+int		g_ants;
+int		g_src;
+int		g_dst;
+int		g_tab_size;
+char	**g_tab;
 
 void	exit_func(t_room *rooms, char *msg)
 {
 	ft_printf("Error: %s\n", msg);
-	system("leaks ants");
+	// system("leaks ants");
 	exit(0);
+}
+
+void	print_parsed_data(void)
+{
+	int i;
+
+	i = 0;
+	while (g_tab[i])
+	{
+		ft_printf("%s\n", g_tab[i]);
+		i++;
+	}
+	ft_printf("\n");
 }
 
 void	print_moves(t_room **rooms, t_route *first_routes)
@@ -67,8 +82,11 @@ int		main(void)
 	t_room	**rooms;
 	t_route	*routs;
 
+	g_tab_size = 1000;
+	g_tab = (char **)malloc(sizeof(char *) * g_tab_size);
 	get_ants();
 	rooms = get_rooms();
+	print_rooms(*rooms);
 	// print_rooms(*rooms); //
 
 	// ft_printf("!!! ROUTES !!!\n\n"); //
@@ -79,9 +97,11 @@ int		main(void)
 
 	ft_printf("\n!!! BEST COMB !!!\n\n"); //
 	find_best(rooms, routs);
+
 	print_routs(routs);
 
-	ft_printf("\n!!! MOVES !!!\n\n"); 
+	ft_printf("\n!!! MOVES !!!\n\n");
+	print_parsed_data();
 	print_moves(rooms, routs);
 
 	// system("leaks ants");

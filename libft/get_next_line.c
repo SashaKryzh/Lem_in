@@ -12,17 +12,6 @@
 
 #include "get_next_line.h"
 
-static t_gnl	*ft_new_fd(int fd, t_gnl *next)
-{
-	t_gnl	*tmp;
-
-	tmp = (t_gnl *)malloc(sizeof(t_gnl));
-	tmp->str = NULL;
-	tmp->fd = fd;
-	tmp->next = next;
-	return (tmp);
-}
-
 static char		*ft_update_str(int path, char *st_buff, char *buff, size_t len)
 {
 	char *tmp;
@@ -36,29 +25,25 @@ static char		*ft_update_str(int path, char *st_buff, char *buff, size_t len)
 	return (st_buff);
 }
 
-static int		ft_return_line(int ret, t_gnl *elem, char **line)
+static int		ft_return_line(int ret, char **st_buff, int fd, char **line)
 {
 	size_t	len;
 
 	len = 0;
-	if (ret < 0)
-		return (-1);
-	if (ret == 0 && elem->str == NULL)
-		return (0);
-	while (elem->str[len] != '\n' && elem->str[len] != '\0')
+	while (st_buff[fd][len] != '\n' && st_buff[fd][len] != '\0')
 		len++;
-	if (elem->str[len] == '\n')
+	if (st_buff[fd][len] == '\n')
 	{
-		*line = len ? ft_strsub(elem->str, 0, len) : ft_strnew(0);
-		elem->str = ft_update_str(2, elem->str, NULL, len);
-		if (elem->str[0] == '\0')
-			ft_strdel(&elem->str);
+		*line = len ? ft_strsub(st_buff[fd], 0, len) : ft_strnew(0);
+		st_buff[fd] = ft_update_str(2, st_buff[fd], NULL, len);
+		if (st_buff[fd][0] == '\0')
+			ft_strdel(&st_buff[fd]);
 	}
 	else
 	{
-		*line = len ? ft_strsub(elem->str, 0, len) : ft_strnew(0);
-		ft_strdel(&elem->str);
-		if (**line && ret == 0)
+		*line = len ? ft_strsub(st_buff[fd], 0, len) : NULL;
+		ft_strdel(&st_buff[fd]);
+		if (*line == NULL && ret == 0)
 			return (0);
 	}
 	return (1);
@@ -66,28 +51,21 @@ static int		ft_return_line(int ret, t_gnl *elem, char **line)
 
 int				get_next_line(const int fd, char **line)
 {
-	static t_gnl	*list;
-	t_gnl			*elem;
+	static char		*st_buff[MAX_FD_CNT];
 	char			buff[BUFF_SIZE + 1];
 	int				ret;
 
 	if (fd < 0 || line == NULL)
 		return (-1);
-	elem = list;
-	while (elem && elem->fd != fd)
-		elem = elem->next;
-	if (elem == NULL)
-	{
-		elem = ft_new_fd(fd, list);
-		list = elem;
-	}
+	st_buff[fd] = st_buff[fd] ? st_buff[fd] : ft_strnew(0);
 	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[ret] = '\0';
-		elem->str = elem->str ? elem->str : ft_strnew(0);
-		elem->str = ft_update_str(1, elem->str, buff, 0);
-		if (ft_strrchr(buff, '\n'))
+		st_buff[fd] = ft_update_str(1, st_buff[fd], buff, 0);
+		if (ft_strchr(buff, '\n'))
 			break ;
 	}
-	return (ft_return_line(ret, elem, line));
+	if (ret < 0)
+		return (-1);
+	return (ft_return_line(ret, st_buff, fd, line));
 }

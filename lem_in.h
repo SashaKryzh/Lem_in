@@ -18,10 +18,12 @@
 # define INF 2147483647
 # define ROOM routes->route
 
-extern int g_cnt_rooms;
-extern int g_ants;
-extern int g_src;
-extern int g_dst;
+extern int		g_cnt_rooms;
+extern int		g_ants;
+extern int		g_src;
+extern int		g_dst;
+extern int		g_tab_size;
+extern char		**g_tab;
 
 typedef struct		s_room
 {
@@ -86,6 +88,7 @@ void				exit_func(t_room *rooms, char *msg);
 t_room				**lst_to_array(t_room *lst);
 void				lst_sort(t_route *routs);
 void				convert_routs(t_room **rooms, t_route *routs);
+void				add_to_tab(char *line);
 
 /*
 ** Rooms utils
