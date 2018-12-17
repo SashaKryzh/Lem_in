@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-void	mark_rout(t_room **rooms, int *p, int src, int dst)
+void	mark_route_p(t_room **rooms, int *p, int src, int dst)
 {
 	int v;
 
@@ -24,7 +24,7 @@ void	mark_rout(t_room **rooms, int *p, int src, int dst)
 	}
 }
 
-void	mark_rout2(t_route *routes)
+void	mark_route_ar(t_route *routes)
 {
 	int i;
 
@@ -45,7 +45,7 @@ void	unmark_routs(t_room *rooms)
 	}
 }
 
-void	unmark_rout(t_route	*route)
+void	unmark_rout(t_route *route)
 {
 	int i;
 

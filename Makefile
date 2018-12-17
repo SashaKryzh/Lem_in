@@ -10,23 +10,23 @@
 #                                                                              #
 #******************************************************************************#
 
-NAME = ants
+NAME = lem-in
 
 FLAGS = -Wall -Wextra -Werror
-CC = gcc
+CC = gcc $(FLAGS)
 
 SRCS = main.c \
-dijkstra.c \
 bfs.c \
 find_routs.c \
-find_best.c \
+print_moves.c \
 utils.c \
+utils_2.c \
+show_info.c \
 parser.c \
 tab_managment.c \
 routes_utils.c \
 rooms_utils.c \
-find_room.c \
-tests.c
+find_room.c
 
 LIBFT = -L ./libft -lft
 LIB_HEAD = ./libft/includes

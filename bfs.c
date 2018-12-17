@@ -49,7 +49,7 @@ void	bfs_init(int *p, int *u, int *d, int src)
 	int i;
 
 	i = 0;
-	while (i < g_cnt_rooms + 1)
+	while (i < g_cnt_rooms)
 	{
 		p[i] = -1;
 		u[i] = 0;
@@ -58,19 +58,6 @@ void	bfs_init(int *p, int *u, int *d, int src)
 	}
 	u[src] = 1;
 	d[src] = 0;
-}
-
-int		bfs_return(t_tube *q, int *d)
-{
-	t_tube *tmp;
-
-	while (q)
-	{
-		tmp = q;
-		free(tmp);
-		q = q->next;
-	}
-	return (d[g_dst]);
 }
 
 int		bfs_check(t_tube *tmp, int *d, int *p, int v)
@@ -85,24 +72,21 @@ int		bfs_check(t_tube *tmp, int *d, int *p, int v)
 int		bfs(t_room **rooms, int *p, int src, t_tube *q)
 {
 	t_tube	*tmp;
-	int		u[g_cnt_rooms + 1];
-	int		d[g_cnt_rooms + 1];
+	int		u[g_cnt_rooms];
+	int		d[g_cnt_rooms];
 	int		v;
 
 	q = q_add(q, rooms[src]);
 	bfs_init(p, u, d, src);
-
 	while (q)
 	{
 		v = q_get(&q);
 		tmp = rooms[v]->tubes;
-		ft_printf("!%s!\n", rooms[v]->name);
 		while (tmp)
 		{
-			ft_printf("%s\n", tmp->path->name);
-			if (!u[tmp->path->index] && !tmp->path->used)
+			if (!u[tmp->path->index] && !tmp->path->used
+				&& tmp->path->role != locked)
 			{
-				ft_printf("???\n");
 				if (!(u[tmp->path->index] = bfs_check(tmp, d, p, v)))
 					return (bfs_return(q, d));
 				q = q_add(q, tmp->path);
