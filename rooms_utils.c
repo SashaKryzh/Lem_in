@@ -20,7 +20,7 @@ t_room	*create_room(char *line, int role)
 	ft_bzero(new, sizeof(t_room));
 	new->name = ft_strsub(line, 0, ft_strchr(line, ' ') - line);
 	new->x = ft_atoi(ft_strchr(line, ' ') + 1);
-	new->y = ft_atoi(ft_strrchr(line, ' ') + 1);
+	new->y = ft_atoi(ft_strchr(ft_strchr(line, ' ') + 1, ' ') + 1);
 	if (new->x < 0 || new->y < 0)
 		exit_func(0, "Negative cordinates");
 	new->role = role;
